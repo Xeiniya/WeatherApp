@@ -1,6 +1,13 @@
 package com.example.weatherapp
 
-import androidx.compose.ui.window.CanvasBasedWindow
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.window.ComposeViewport
 import com.example.weatherapp.ui.App
+import kotlinx.browser.document
 
-fun main() { CanvasBasedWindow("Weather App") { App() } }
+@OptIn(ExperimentalComposeUiApi::class)
+fun main() {
+    ComposeViewport(document.body!!) {
+        App()
+    }
+}
