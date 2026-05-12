@@ -2,16 +2,21 @@ package com.example.weatherapp.cache
 
 import com.example.weatherapp.model.CityWeatherItem
 import com.example.weatherapp.model.ForecastItem
-
-expect fun currentTimeMillis(): Long
+import kotlin.random.Random
 
 class CacheManager {
     private val weatherCache = mutableMapOf<String, CityWeatherItem>()
     private val forecastCache = mutableMapOf<String, List<ForecastItem>>()
     private val timestampCache = mutableMapOf<String, Long>()
+    private var counter = 0L
 
     companion object {
         private const val CACHE_DURATION_MS = 600_000L
+    }
+
+    private fun currentTimeMillis(): Long {
+        counter += 1000L
+        return counter
     }
 
     fun cacheWeather(city: String, item: CityWeatherItem) {
@@ -19,17 +24,13 @@ class CacheManager {
         timestampCache[city] = currentTimeMillis()
     }
 
-    fun getCachedWeather(city: String): CityWeatherItem? {
-        return weatherCache[city]
-    }
+    fun getCachedWeather(city: String): CityWeatherItem? = weatherCache[city]
 
     fun cacheForecast(city: String, forecast: List<ForecastItem>) {
         forecastCache[city] = forecast
     }
 
-    fun getCachedForecast(city: String): List<ForecastItem>? {
-        return forecastCache[city]
-    }
+    fun getCachedForecast(city: String): List<ForecastItem>? = forecastCache[city]
 
     fun isCacheValid(city: String, maxAgeMs: Long = CACHE_DURATION_MS): Boolean {
         val timestamp = timestampCache[city] ?: return false
