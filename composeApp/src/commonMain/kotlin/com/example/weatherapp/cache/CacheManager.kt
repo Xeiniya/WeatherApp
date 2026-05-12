@@ -3,6 +3,7 @@ package com.example.weatherapp.cache
 import com.example.weatherapp.model.CityWeatherItem
 import com.example.weatherapp.model.ForecastItem
 
+expect fun currentTimeMillis(): Long
 
 class CacheManager {
     private val weatherCache = mutableMapOf<String, CityWeatherItem>()
@@ -10,7 +11,7 @@ class CacheManager {
     private val timestampCache = mutableMapOf<String, Long>()
 
     companion object {
-        private const val CACHE_DURATION_MS = 600_000L // 10 минут
+        private const val CACHE_DURATION_MS = 600_000L
     }
 
     fun cacheWeather(city: String, item: CityWeatherItem) {
@@ -39,9 +40,5 @@ class CacheManager {
         weatherCache.clear()
         forecastCache.clear()
         timestampCache.clear()
-    }
-
-    private fun currentTimeMillis(): Long {
-        return kotlinx.datetime.Clock.System.now().toEpochMilliseconds()
     }
 }
